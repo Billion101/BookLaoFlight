@@ -10,7 +10,6 @@ import {
   PlaneTakeoff,
   Search,
   SlidersHorizontal,
-  Sparkles,
   Users
 } from "lucide-react";
 import {
@@ -272,18 +271,13 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
           {/* Top Navigation Bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-white/15">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-[#eab308] to-[#fde047] text-[#19398a] flex items-center justify-center font-display font-bold shadow-lg shadow-amber-500/25 border border-amber-300/60">
-                <PlaneTakeoff className="w-6 h-6" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#eab308] to-[#fde047] text-[#19398a] flex items-center justify-center font-display font-bold shadow-lg shadow-amber-500/25 border border-amber-300/60">
+                <PlaneTakeoff className="w-5 h-5" />
               </div>
               <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-display font-bold text-lg sm:text-xl tracking-tight text-white drop-shadow-xs">
-                    {t.appName}
-                  </span>
-                </div>
-                <p className="text-[11px] text-blue-100/80 mt-0.5">
-                  {t.portalDesc}
-                </p>
+                <span className="font-display font-bold text-lg sm:text-xl tracking-tight text-white drop-shadow-xs">
+                  {t.appName}
+                </span>
               </div>
             </div>
 
@@ -345,12 +339,8 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
           </div>
 
           {/* Route Headline */}
-          <div className="mt-5 mb-4 flex flex-col lg:flex-row lg:items-end justify-between gap-3">
+          <div className="mt-5 mb-4 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
             <div>
-              <div className="inline-flex items-center gap-1.5 text-[11px] font-mono-tabular uppercase tracking-widest text-[#fde047] mb-1 font-bold">
-                <Sparkles className="w-3 h-3" />
-                <span>{t.headlineMatrix}</span>
-              </div>
               <h1 className="font-display text-lg sm:text-2xl font-bold tracking-tight text-white flex flex-wrap items-center gap-2 drop-shadow-xs">
                 <span>
                   {language === "lo" ? originInfo?.nameLao : originInfo?.city || origin}{" "}
@@ -366,9 +356,6 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
                   </span>
                 </span>
               </h1>
-              <p className="text-[11px] text-blue-100/80 mt-0.5">
-                {t.headlineSub}
-              </p>
             </div>
 
             {/* Quick Route Selector Pills */}
@@ -764,20 +751,15 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
       </main>
 
       {/* Client Consumer Portal Footer - Lao Airlines Royal Navy & Champa Gold */}
-      <footer className="bg-[#0f245c] text-blue-100/90 border-t-4 border-[#eab308] mt-12 py-7 text-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <div className="space-y-1">
-            <div className="flex items-center justify-center sm:justify-start gap-2">
-              <span className="font-bold text-white tracking-wide">{t.appName}</span>
-              <span className="text-[#fde047]">•</span>
-              <span className="text-blue-200">{t.footerTitle}</span>
-            </div>
-            <p className="text-[11px] text-blue-300/80">{t.footerSubtitle}</p>
+      <footer className="bg-[#0f245c] text-blue-100/90 border-t-4 border-[#eab308] mt-12 py-6 text-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          <div className="flex items-center justify-center sm:justify-start gap-2">
+            <span className="font-bold text-white tracking-wide">{t.appName}</span>
+            <span className="text-slate-400">·</span>
+            <span className="text-blue-200">© 2026 Sabaidee Sky</span>
           </div>
-          <div className="flex items-center gap-3 justify-center text-blue-200 text-xs">
-            <span className="font-semibold text-white">QV • LK • 5A</span>
-            <span>•</span>
-            <span className="text-[#fde047] font-bold">2026 Sabaidee Sky</span>
+          <div className="flex items-center gap-2.5 justify-center text-blue-200 text-xs">
+            <span className="font-semibold text-white">Lao Airlines · Lao Skyway · Lanexang Airways</span>
           </div>
         </div>
       </footer>
