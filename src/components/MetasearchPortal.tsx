@@ -34,6 +34,11 @@ import {
 } from "./FlightTicketCard";
 import { AirlineLogo } from "./AirlineLogo";
 import { LaosAirspaceMap } from "./LaosAirspaceMap";
+import {
+  AirportSelect,
+  DatePickerSelect,
+  PassengerSelect
+} from "./SearchControls";
 
 interface MetasearchPortalProps {
   initialData: MetasearchResponse;
@@ -398,30 +403,17 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
             }}
             className="bg-white text-slate-900 border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 shadow-2xl grid grid-cols-1 md:grid-cols-12 gap-3 items-center"
           >
-            {/* Origin Select (3 cols) */}
-            <div className="md:col-span-3 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 focus-within:border-[#19398a] focus-within:bg-blue-50/30 transition">
-              <label
-                htmlFor="origin-select"
-                className="block text-[10px] font-mono-tabular uppercase tracking-wider text-[#19398a] font-bold"
-              >
-                {t.originLabel}
-              </label>
-              <select
+            {/* Origin Airport Custom Dropdown (3 cols) */}
+            <div className="md:col-span-3">
+              <AirportSelect
                 id="origin-select"
+                label={t.originLabel}
                 value={origin}
-                onChange={(e) => setOrigin(e.target.value)}
-                className="mt-1 w-full bg-transparent text-slate-900 font-display font-bold text-sm focus:outline-none cursor-pointer"
-              >
-                {LAOS_AIRPORTS.map((ap) => (
-                  <option
-                    key={`orig-${ap.code}`}
-                    value={ap.code}
-                    className="bg-white text-slate-900"
-                  >
-                    {ap.code} — {language === "lo" ? ap.nameLao : ap.city} ({language === "lo" ? ap.city : ap.nameLao})
-                  </option>
-                ))}
-              </select>
+                onChange={setOrigin}
+                excludeCode={destination}
+                lang={language}
+                type="origin"
+              />
             </div>
 
             {/* Swap Button (1 col) */}
@@ -436,71 +428,39 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
               </button>
             </div>
 
-            {/* Destination Select (3 cols) */}
-            <div className="md:col-span-3 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 focus-within:border-[#19398a] focus-within:bg-blue-50/30 transition">
-              <label
-                htmlFor="dest-select"
-                className="block text-[10px] font-mono-tabular uppercase tracking-wider text-[#19398a] font-bold"
-              >
-                {t.destLabel}
-              </label>
-              <select
+            {/* Destination Airport Custom Dropdown (3 cols) */}
+            <div className="md:col-span-3">
+              <AirportSelect
                 id="dest-select"
+                label={t.destLabel}
                 value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-                className="mt-1 w-full bg-transparent text-slate-900 font-display font-bold text-sm focus:outline-none cursor-pointer"
-              >
-                {LAOS_AIRPORTS.map((ap) => (
-                  <option
-                    key={`dest-${ap.code}`}
-                    value={ap.code}
-                    className="bg-white text-slate-900"
-                  >
-                    {ap.code} — {language === "lo" ? ap.nameLao : ap.city} ({language === "lo" ? ap.city : ap.nameLao})
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Departure Date (2 cols) */}
-            <div className="md:col-span-2 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 focus-within:border-[#19398a] focus-within:bg-blue-50/30 transition">
-              <label
-                htmlFor="date-input"
-                className="block text-[10px] font-mono-tabular uppercase tracking-wider text-[#19398a] font-bold flex items-center gap-1"
-              >
-                <Calendar className="w-3 h-3 text-[#19398a]" />
-                <span>{t.travelDateLabel}</span>
-              </label>
-              <input
-                id="date-input"
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="mt-1 w-full bg-transparent text-slate-900 font-mono-tabular font-bold text-sm focus:outline-none cursor-pointer"
+                onChange={setDestination}
+                excludeCode={origin}
+                lang={language}
+                type="dest"
               />
             </div>
 
-            {/* Adults Count (1 col) */}
-            <div className="md:col-span-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 focus-within:border-[#19398a] focus-within:bg-blue-50/30 transition">
-              <label
-                htmlFor="adults-select"
-                className="block text-[10px] font-mono-tabular uppercase tracking-wider text-[#19398a] font-bold flex items-center gap-1"
-              >
-                <Users className="w-3 h-3 text-[#19398a]" />
-                <span>{t.passengersLabel}</span>
-              </label>
-              <select
+            {/* Departure Date Custom Calendar Dropdown (2 cols) */}
+            <div className="md:col-span-2">
+              <DatePickerSelect
+                id="date-input"
+                label={t.travelDateLabel}
+                value={date}
+                onChange={setDate}
+                lang={language}
+              />
+            </div>
+
+            {/* Adults Count Custom Dropdown (1 col) */}
+            <div className="md:col-span-1">
+              <PassengerSelect
                 id="adults-select"
+                label={t.passengersLabel}
                 value={adults}
-                onChange={(e) => setAdults(parseInt(e.target.value, 10))}
-                className="mt-1 w-full bg-transparent text-slate-900 font-mono-tabular font-bold text-sm focus:outline-none cursor-pointer"
-              >
-                {[1, 2, 3, 4, 5, 6].map((n) => (
-                  <option key={n} value={n} className="bg-white text-slate-900">
-                    {n} {t.paxUnit}
-                  </option>
-                ))}
-              </select>
+                onChange={setAdults}
+                lang={language}
+              />
             </div>
 
             {/* Search Submit CTA (2 cols) */}

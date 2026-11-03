@@ -92,7 +92,20 @@ export const TRANSLATIONS = {
     fromPrice: "from",
     taxesIncluded: "Taxes & fees included",
     details: "Details",
-    allIn: "All-in"
+    allIn: "All-in",
+    searchAirportsPlaceholder: "Search city or airport code...",
+    selectAirport: "Select Airport",
+    today: "Today",
+    tomorrow: "Tomorrow",
+    plus7Days: "+7 Days",
+    adultsDesc: "Age 12+ years",
+    done: "Done",
+    maxPassengers: "Max 6 passengers per booking",
+    months: [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ],
+    weekdaysShort: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
   },
   lo: {
     appName: "SABAIDEE SKY",
@@ -185,7 +198,20 @@ export const TRANSLATIONS = {
     fromPrice: "ເລີ່ມຕົ້ນ",
     taxesIncluded: "ລວມພາສີ & ຄ່າທຳນຽມແລ້ວ",
     details: "ລາຍລະອຽດ",
-    allIn: "ລວມທັງໝົດ"
+    allIn: "ລວມທັງໝົດ",
+    searchAirportsPlaceholder: "ຄົ້ນຫາເມືອງ ຫຼື ລະຫັດສະໜາມບິນ...",
+    selectAirport: "ເລືອກສະໜາມບິນ",
+    today: "ມື້ນີ້",
+    tomorrow: "ມື້ອື່ນ",
+    plus7Days: "+7 ວັນ",
+    adultsDesc: "ອາຍຸ 12 ປີຂຶ້ນໄປ",
+    done: "ສຳເລັດ",
+    maxPassengers: "ສູງສຸດ 6 ທ່ານຕໍ່ການຈອງ",
+    months: [
+      "ມັງກອນ", "ກຸມພາ", "ມີນາ", "ເມສາ", "ພຶດສະພາ", "ມິຖຸນາ",
+      "ກໍລະກົດ", "ສິງຫາ", "ກັນຍາ", "ຕຸລາ", "ພະຈິກ", "ທັນວາ"
+    ],
+    weekdaysShort: ["ອາ", "ຈ", "ອ", "ພ", "ພຫ", "ສຸກ", "ເສົາ"]
   }
 } as const;
 
