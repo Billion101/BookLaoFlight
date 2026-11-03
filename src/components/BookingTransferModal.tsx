@@ -95,7 +95,7 @@ export function BookingTransferModal({
     >
       <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden text-slate-900">
         {/* Header Bar */}
-        <div className="px-5 py-4 bg-gradient-to-r from-slate-900 via-sky-950 to-slate-900 text-white flex items-center justify-between">
+        <div className="px-5 py-4 bg-[#19398a] text-white flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-lg bg-sky-500/20 text-sky-300">
               <ShieldCheck className="w-5 h-5 text-sky-400" />

@@ -260,18 +260,12 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Top Aviation Dispatch Hero Console - Lao Airlines Royal Navy & Dok Champa Gold */}
-      <header className="bg-gradient-to-r from-[#19398a] via-[#152e72] to-[#0f245c] text-white border-b-4 border-[#eab308] relative shadow-lg z-30">
-        {/* Subtle Dok Champa ambient light - isolated inside an overflow-hidden layer so header itself never clips popovers */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-32 left-1/4 w-96 h-96 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-32 right-1/4 w-96 h-96 bg-blue-300/10 rounded-full blur-3xl pointer-events-none" />
-        </div>
-
+      <header className="bg-[#19398a] text-white border-b-4 border-[#eab308] relative z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-7 relative z-10">
           {/* Top Navigation Bar */}
           <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-white/15">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#eab308] to-[#fde047] text-[#19398a] flex items-center justify-center font-display font-bold shadow-lg shadow-amber-500/25 border border-amber-300/60">
+              <div className="w-10 h-10 rounded-xl bg-[#eab308] text-[#19398a] flex items-center justify-center font-display font-bold shadow-xs">
                 <PlaneTakeoff className="w-5 h-5" />
               </div>
               <div>
@@ -344,14 +338,14 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
               <h1 className="font-display text-lg sm:text-2xl font-bold tracking-tight text-white flex flex-wrap items-center gap-2 drop-shadow-xs">
                 <span>
                   {language === "lo" ? originInfo?.nameLao : originInfo?.city || origin}{" "}
-                  <span className="text-[#fde047] font-mono-tabular">
+                  <span className="text-blue-100 font-mono-tabular">
                     ({origin})
                   </span>
                 </span>
                 <span className="text-blue-200">→</span>
                 <span>
                   {language === "lo" ? destInfo?.nameLao : destInfo?.city || destination}{" "}
-                  <span className="text-white font-mono-tabular">
+                  <span className="text-blue-100 font-mono-tabular">
                     ({destination})
                   </span>
                 </span>
