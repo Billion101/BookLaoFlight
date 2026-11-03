@@ -90,8 +90,10 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
       nextDest: string,
       nextDate: string,
       nextAdults: number,
-      bypassCache: boolean = false
+      bypassCache: boolean = false,
+      overrideCurrency?: CurrencyCode
     ) => {
+      const activeCurrency = overrideCurrency ?? displayCurrency;
       if (nextOrigin === nextDest) {
         setErrorMsg(t.differentAirportsError);
         return;
@@ -104,7 +106,7 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
           dest: nextDest,
           date: nextDate,
           adults: String(nextAdults),
-          currency: displayCurrency,
+          currency: activeCurrency,
           ...(bypassCache ? { bypassCache: "true" } : {})
         });
         const res = await fetch(`/api/flights/search?${params.toString()}`);
@@ -125,6 +127,11 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
     },
     [displayCurrency, t.differentAirportsError, t.searchFailedError]
   );
+
+  const handleCurrencyChange = (newCurrency: CurrencyCode) => {
+    setDisplayCurrency(newCurrency);
+    executeSearch(origin, destination, date, adults, false, newCurrency);
+  };
 
   const handleSwapAirports = () => {
     const prevOrigin = origin;
@@ -305,18 +312,11 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
                 </button>
               </div>
 
-              {/* Currency Switcher & Exchange Rate Pill */}
-              <div className="hidden md:flex items-center gap-1.5 text-xs font-mono-tabular text-blue-100 bg-[#0f245c]/80 px-3.5 py-1.5 rounded-xl border border-blue-300/20 backdrop-blur-xs">
-                <span>{t.exchangeRateLabel}</span>
-                <span className="text-[#fde047] font-bold">
-                  ₭{USD_TO_LAK_RATE.toLocaleString("en-US")} LAK
-                </span>
-              </div>
-
+              {/* Currency Switcher */}
               <div className="inline-flex rounded-xl bg-[#0f245c]/90 p-1 border border-blue-300/30 font-mono-tabular text-xs">
                 <button
                   type="button"
-                  onClick={() => setDisplayCurrency("LAK")}
+                  onClick={() => handleCurrencyChange("LAK")}
                   className={`px-3 py-1.5 rounded-lg font-bold transition cursor-pointer ${
                     displayCurrency === "LAK"
                       ? "bg-[#eab308] text-[#0f245c] shadow-md"
@@ -327,7 +327,7 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setDisplayCurrency("USD")}
+                  onClick={() => handleCurrencyChange("USD")}
                   className={`px-3 py-1.5 rounded-lg font-bold transition cursor-pointer ${
                     displayCurrency === "USD"
                       ? "bg-[#eab308] text-[#0f245c] shadow-md"

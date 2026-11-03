@@ -119,13 +119,11 @@ export function FlightTicketCard({
     : flight.priceUsd ?? flight.price;
 
   const unitAmountInDisplay =
-    displayPriceObj.amount ??
-    convertCurrency(flight.price.amount, flight.price.currency, displayCurrency, USD_TO_LAK_RATE);
+    displayPriceObj?.amount ?? flight.price.amount;
 
   const secondaryCurrency: CurrencyCode = isDisplayUsd ? "LAK" : "USD";
   const unitAmountInSecondary =
-    secondaryPriceObj.amount ??
-    convertCurrency(flight.price.amount, flight.price.currency, secondaryCurrency, USD_TO_LAK_RATE);
+    secondaryPriceObj?.amount ?? flight.price.amount;
 
   const totalForPassengers = unitAmountInDisplay * adults;
 
@@ -356,16 +354,16 @@ export function FlightTicketCard({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {flight.fareTiers.map((tier) => {
               const tierTotalAmt = isDisplayUsd
-                ? tier.amountUsd ?? convertCurrency(tier.amount, tier.currency, "USD", USD_TO_LAK_RATE)
-                : tier.amountLak ?? convertCurrency(tier.amount, tier.currency, "LAK", USD_TO_LAK_RATE);
+                ? tier.amountUsd ?? tier.amount
+                : tier.amountLak ?? tier.amount;
 
               const tierBaseAmt = isDisplayUsd
-                ? tier.baseFareUsd ?? (typeof tier.baseFare === "number" ? convertCurrency(tier.baseFare, tier.currency, "USD", USD_TO_LAK_RATE) : null)
-                : tier.baseFareLak ?? (typeof tier.baseFare === "number" ? convertCurrency(tier.baseFare, tier.currency, "LAK", USD_TO_LAK_RATE) : null);
+                ? tier.baseFareUsd ?? (typeof tier.baseFare === "number" ? tier.baseFare : null)
+                : tier.baseFareLak ?? (typeof tier.baseFare === "number" ? tier.baseFare : null);
 
               const tierTaxAmt = isDisplayUsd
-                ? tier.taxAmountUsd ?? (typeof tier.taxAmount === "number" ? convertCurrency(tier.taxAmount, tier.currency, "USD", USD_TO_LAK_RATE) : null)
-                : tier.taxAmountLak ?? (typeof tier.taxAmount === "number" ? convertCurrency(tier.taxAmount, tier.currency, "LAK", USD_TO_LAK_RATE) : null);
+                ? tier.taxAmountUsd ?? (typeof tier.taxAmount === "number" ? tier.taxAmount : null)
+                : tier.taxAmountLak ?? (typeof tier.taxAmount === "number" ? tier.taxAmount : null);
 
               return (
                 <div

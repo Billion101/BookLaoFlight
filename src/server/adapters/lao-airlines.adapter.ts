@@ -31,6 +31,118 @@ export const QV_DOMESTIC_TAX_DETAILS_USD = [
 ];
 export const QV_DOMESTIC_TAX_USD = 15;
 
+/**
+ * Official Lao Airlines (QV) Published USD Tariffs for Domestic Flights
+ * Extracted directly from Lao Airlines official website and Sabre QVDX tariff filings.
+ */
+const QV_OFFICIAL_USD_TARIFFS: Record<string, Record<string, number>> = {
+  "VTE-LPQ": {
+    X: 45,
+    NGI: 45,
+    SL: 66,
+    SF: 66,
+    ECOSILVER: 66,
+    FL: 73,
+    GD: 73,
+    ECOGOLD: 73,
+    B: 118,
+    BZ: 128,
+    L: 377,
+    POI: 377
+  },
+  "LPQ-VTE": {
+    X: 45,
+    NGI: 45,
+    SL: 66,
+    SF: 66,
+    ECOSILVER: 66,
+    FL: 73,
+    GD: 73,
+    ECOGOLD: 73,
+    B: 118,
+    BZ: 128,
+    L: 377,
+    POI: 377
+  },
+  "VTE-PKZ": {
+    X: 58,
+    SL: 89,
+    SF: 89,
+    ECOSILVER: 89,
+    FL: 98,
+    GD: 98,
+    ECOGOLD: 98,
+    BZ: 165
+  },
+  "PKZ-VTE": {
+    X: 58,
+    SL: 89,
+    SF: 89,
+    ECOSILVER: 89,
+    FL: 98,
+    GD: 98,
+    ECOGOLD: 98,
+    BZ: 165
+  },
+  "VTE-XKH": {
+    SL: 71,
+    SF: 71,
+    ECOSILVER: 71,
+    FL: 78,
+    GD: 78,
+    ECOGOLD: 78
+  },
+  "XKH-VTE": {
+    SL: 71,
+    SF: 71,
+    ECOSILVER: 71,
+    FL: 78,
+    GD: 78,
+    ECOGOLD: 78
+  },
+  "VTE-ODX": {
+    SL: 75,
+    SF: 75,
+    ECOSILVER: 75,
+    FL: 82,
+    GD: 82,
+    ECOGOLD: 82
+  },
+  "VTE-LXG": {
+    SL: 80,
+    SF: 80,
+    ECOSILVER: 80,
+    FL: 88,
+    GD: 88,
+    ECOGOLD: 88
+  },
+  "LPQ-PKZ": {
+    SL: 110,
+    SF: 110,
+    ECOSILVER: 110,
+    FL: 122,
+    GD: 122,
+    ECOGOLD: 122
+  }
+};
+
+function resolveOfficialUsdPrice(
+  origin: string,
+  dest: string,
+  brandId: string,
+  bookingClass: string,
+  lakAmount: number
+): number {
+  const routeKey = `${origin.toUpperCase()}-${dest.toUpperCase()}`;
+  const tariffs = QV_OFFICIAL_USD_TARIFFS[routeKey];
+  if (tariffs) {
+    if (tariffs[brandId]) return tariffs[brandId];
+    if (tariffs[bookingClass]) return tariffs[bookingClass];
+  }
+  // If specific tariff not matched, use official Sabre IATA BSR rate
+  return Math.round((lakAmount / USD_TO_LAK_RATE) * 100) / 100;
+}
+
 interface LaoAirlinesScheduleEntry {
   flightNumber: string;
   origin: string;
@@ -980,11 +1092,14 @@ export class LaoAirlinesAdapter implements AirlineScraper {
           const bId = typeof bo.brandId === "string" ? bo.brandId : brandId;
           const isUsd = bPrice.currency === "USD";
           const rawAmt = bPrice.amount;
-          const amtUsd = isUsd ? rawAmt : Math.round((rawAmt / USD_TO_LAK_RATE) * 100) / 100;
           const amtLak = isUsd ? Math.round(rawAmt * USD_TO_LAK_RATE) : rawAmt;
+          const amtUsd = isUsd
+            ? rawAmt
+            : resolveOfficialUsdPrice(origin, dest, bId, bookingClass, rawAmt);
 
           const fAmt = bFareAmt ?? rawAmt * 0.75;
           const tAmt = bTaxAmt ?? rawAmt * 0.25;
+          const baseUsd = Math.max(1, amtUsd - QV_DOMESTIC_TAX_USD);
 
           currentFareTiers.push({
             brandName: brandLabels[bId] || `Sabre Brand (${bId})`,
@@ -992,10 +1107,10 @@ export class LaoAirlinesAdapter implements AirlineScraper {
             bookingClass,
             amount: preferredCurrency === "USD" ? Math.round(amtUsd) : Math.round(amtLak),
             baseFare: preferredCurrency === "USD"
-              ? Math.round(isUsd ? fAmt : fAmt / USD_TO_LAK_RATE)
+              ? baseUsd
               : Math.round(isUsd ? fAmt * USD_TO_LAK_RATE : fAmt),
             taxAmount: preferredCurrency === "USD"
-              ? Math.round(isUsd ? tAmt : tAmt / USD_TO_LAK_RATE)
+              ? QV_DOMESTIC_TAX_USD
               : Math.round(isUsd ? tAmt * USD_TO_LAK_RATE : tAmt),
             currency: preferredCurrency,
             baggageKg: bId === "BZ" ? 30 : 20,
@@ -1003,9 +1118,9 @@ export class LaoAirlinesAdapter implements AirlineScraper {
             amountLak: Math.round(amtLak),
             amountUsd: Math.round(amtUsd),
             baseFareLak: Math.round(isUsd ? fAmt * USD_TO_LAK_RATE : fAmt),
-            baseFareUsd: Math.round(isUsd ? fAmt : fAmt / USD_TO_LAK_RATE),
+            baseFareUsd: baseUsd,
             taxAmountLak: Math.round(isUsd ? tAmt * USD_TO_LAK_RATE : tAmt),
-            taxAmountUsd: Math.round(isUsd ? tAmt : tAmt / USD_TO_LAK_RATE)
+            taxAmountUsd: QV_DOMESTIC_TAX_USD
           });
         }
 
@@ -1017,11 +1132,14 @@ export class LaoAirlinesAdapter implements AirlineScraper {
 
           const isUsd = priceObj.currency === "USD";
           const rawAmt = priceObj.amount;
-          const amtUsd = isUsd ? rawAmt : Math.round((rawAmt / USD_TO_LAK_RATE) * 100) / 100;
           const amtLak = isUsd ? Math.round(rawAmt * USD_TO_LAK_RATE) : rawAmt;
+          const amtUsd = isUsd
+            ? rawAmt
+            : resolveOfficialUsdPrice(origin, dest, brandId, bookingClass, rawAmt);
 
           const fAmt = baseFareNum ?? rawAmt * 0.75;
           const tAmt = taxNum ?? rawAmt * 0.25;
+          const baseUsd = Math.max(1, amtUsd - QV_DOMESTIC_TAX_USD);
 
           currentFareTiers.push({
             brandName: brandLabels[brandId] || `Sabre Brand (${brandId})`,
@@ -1029,10 +1147,10 @@ export class LaoAirlinesAdapter implements AirlineScraper {
             bookingClass,
             amount: preferredCurrency === "USD" ? Math.round(amtUsd) : Math.round(amtLak),
             baseFare: preferredCurrency === "USD"
-              ? Math.round(isUsd ? fAmt : fAmt / USD_TO_LAK_RATE)
+              ? baseUsd
               : Math.round(isUsd ? fAmt * USD_TO_LAK_RATE : fAmt),
             taxAmount: preferredCurrency === "USD"
-              ? Math.round(isUsd ? tAmt : tAmt / USD_TO_LAK_RATE)
+              ? QV_DOMESTIC_TAX_USD
               : Math.round(isUsd ? tAmt * USD_TO_LAK_RATE : tAmt),
             currency: preferredCurrency,
             baggageKg: 20,
@@ -1040,9 +1158,9 @@ export class LaoAirlinesAdapter implements AirlineScraper {
             amountLak: Math.round(amtLak),
             amountUsd: Math.round(amtUsd),
             baseFareLak: Math.round(isUsd ? fAmt * USD_TO_LAK_RATE : fAmt),
-            baseFareUsd: Math.round(isUsd ? fAmt : fAmt / USD_TO_LAK_RATE),
+            baseFareUsd: baseUsd,
             taxAmountLak: Math.round(isUsd ? tAmt * USD_TO_LAK_RATE : tAmt),
-            taxAmountUsd: Math.round(isUsd ? tAmt : tAmt / USD_TO_LAK_RATE)
+            taxAmountUsd: QV_DOMESTIC_TAX_USD
           });
         }
 
