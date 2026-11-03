@@ -270,41 +270,38 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-display font-bold text-xl tracking-tight text-white drop-shadow-xs">
+                  <span className="font-display font-bold text-lg sm:text-xl tracking-tight text-white drop-shadow-xs">
                     {t.appName}
                   </span>
-                  <span className="text-xs font-mono-tabular px-2.5 py-0.5 rounded-full bg-[#eab308]/20 text-[#fde047] border border-[#eab308]/40 font-bold">
-                    {t.appSub}
-                  </span>
                 </div>
-                <p className="text-xs text-blue-100/90 mt-0.5">
+                <p className="text-[11px] text-blue-100/80 mt-0.5">
                   {t.portalDesc}
                 </p>
               </div>
             </div>
 
             {/* Language & Currency Switcher Controls */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               {/* Language Switcher */}
-              <div className="inline-flex rounded-xl bg-[#0f245c]/90 p-1 border border-blue-300/30 font-mono-tabular text-xs">
+              <div className="inline-flex rounded-xl bg-[#0f245c]/90 p-0.5 border border-blue-300/30 font-mono-tabular text-[11px]">
                 <button
                   type="button"
                   onClick={() => setLanguage("lo")}
-                  className={`px-3 py-1.5 rounded-lg font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                  className={`px-2.5 py-1 rounded-lg font-bold transition cursor-pointer flex items-center gap-1.5 ${
                     language === "lo"
-                      ? "bg-[#eab308] text-[#0f245c] shadow-md"
+                      ? "bg-[#eab308] text-[#0f245c] shadow-xs"
                       : "text-blue-100 hover:text-white"
                   }`}
                 >
-                  <Globe className="w-3.5 h-3.5" />
+                  <Globe className="w-3 h-3" />
                   <span>ພາສາລາວ</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setLanguage("en")}
-                  className={`px-3 py-1.5 rounded-lg font-bold transition cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-lg font-bold transition cursor-pointer ${
                     language === "en"
-                      ? "bg-[#eab308] text-[#0f245c] shadow-md"
+                      ? "bg-[#eab308] text-[#0f245c] shadow-xs"
                       : "text-blue-100 hover:text-white"
                   }`}
                 >
@@ -313,13 +310,13 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
               </div>
 
               {/* Currency Switcher */}
-              <div className="inline-flex rounded-xl bg-[#0f245c]/90 p-1 border border-blue-300/30 font-mono-tabular text-xs">
+              <div className="inline-flex rounded-xl bg-[#0f245c]/90 p-0.5 border border-blue-300/30 font-mono-tabular text-[11px]">
                 <button
                   type="button"
                   onClick={() => handleCurrencyChange("LAK")}
-                  className={`px-3 py-1.5 rounded-lg font-bold transition cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-lg font-bold transition cursor-pointer ${
                     displayCurrency === "LAK"
-                      ? "bg-[#eab308] text-[#0f245c] shadow-md"
+                      ? "bg-[#eab308] text-[#0f245c] shadow-xs"
                       : "text-blue-100 hover:text-white"
                   }`}
                 >
@@ -328,9 +325,9 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
                 <button
                   type="button"
                   onClick={() => handleCurrencyChange("USD")}
-                  className={`px-3 py-1.5 rounded-lg font-bold transition cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-lg font-bold transition cursor-pointer ${
                     displayCurrency === "USD"
-                      ? "bg-[#eab308] text-[#0f245c] shadow-md"
+                      ? "bg-[#eab308] text-[#0f245c] shadow-xs"
                       : "text-blue-100 hover:text-white"
                   }`}
                 >
@@ -340,14 +337,14 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
             </div>
           </div>
 
-          {/* Split-Flap Route Headline */}
-          <div className="mt-6 mb-5 flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+          {/* Route Headline */}
+          <div className="mt-5 mb-4 flex flex-col lg:flex-row lg:items-end justify-between gap-3">
             <div>
-              <div className="inline-flex items-center gap-2 text-xs font-mono-tabular uppercase tracking-widest text-[#fde047] mb-1.5 font-bold">
-                <Sparkles className="w-3.5 h-3.5" />
+              <div className="inline-flex items-center gap-1.5 text-[11px] font-mono-tabular uppercase tracking-widest text-[#fde047] mb-1 font-bold">
+                <Sparkles className="w-3 h-3" />
                 <span>{t.headlineMatrix}</span>
               </div>
-              <h1 className="font-display text-2xl sm:text-4xl font-bold tracking-tight text-white flex flex-wrap items-center gap-3 drop-shadow-xs">
+              <h1 className="font-display text-lg sm:text-2xl font-bold tracking-tight text-white flex flex-wrap items-center gap-2 drop-shadow-xs">
                 <span>
                   {language === "lo" ? originInfo?.nameLao : originInfo?.city || origin}{" "}
                   <span className="text-[#fde047] font-mono-tabular">
@@ -362,7 +359,7 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
                   </span>
                 </span>
               </h1>
-              <p className="text-xs sm:text-sm text-blue-100/90 mt-1">
+              <p className="text-[11px] text-blue-100/80 mt-0.5">
                 {t.headlineSub}
               </p>
             </div>
@@ -379,9 +376,9 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
                     onClick={() =>
                       handleRouteSelect(route.origin, route.destination)
                     }
-                    className={`px-3 py-1.5 rounded-lg text-xs font-mono-tabular font-bold border transition cursor-pointer ${
+                    className={`px-2.5 py-1 rounded-lg text-[11px] font-mono-tabular font-bold border transition cursor-pointer ${
                       isActive
-                        ? "bg-[#eab308] text-[#0f245c] border-[#eab308] shadow-md"
+                        ? "bg-[#eab308] text-[#0f245c] border-[#eab308] shadow-xs"
                         : "bg-white/10 text-white border-white/20 hover:bg-white/20"
                     }`}
                     title={route.tagline}
@@ -567,13 +564,13 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
             </div>
 
             {/* Summary KPI Strip & Sort Controls */}
-            <div className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-6 flex-wrap">
+            <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 sm:p-4 shadow-sm flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-5 sm:gap-6 flex-wrap">
                 <div>
                   <span className="text-[10px] font-mono-tabular uppercase tracking-wider text-slate-400 block font-semibold">
                     {t.availableFlights}
                   </span>
-                  <span className="text-lg font-mono-tabular font-bold text-[#19398a]">
+                  <span className="text-base font-mono-tabular font-bold text-[#19398a]">
                     {filteredAndSortedFlights.length} {t.slotsOf}{" "}
                     {data.summary.totalFlights} {t.slotsSuffix}
                   </span>
@@ -581,11 +578,11 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
 
                 {data.summary.cheapestLak !== null &&
                   data.summary.cheapestUsd !== null && (
-                    <div className="pl-5 border-l border-slate-200">
+                    <div className="pl-4 sm:pl-5 border-l border-slate-200">
                       <span className="text-[10px] font-mono-tabular uppercase tracking-wider text-slate-400 block font-semibold">
                         {t.lowestFare}
                       </span>
-                      <span className="text-lg font-mono-tabular font-bold text-[#19398a]">
+                      <span className="text-base font-mono-tabular font-bold text-[#19398a]">
                         {displayCurrency === "LAK"
                           ? formatMoneyDisplay(data.summary.cheapestLak, "LAK")
                           : formatMoneyDisplay(data.summary.cheapestUsd, "USD")}
@@ -594,11 +591,11 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
                   )}
 
                 {data.summary.fastestDurationMinutes !== null && (
-                  <div className="pl-5 border-l border-slate-200">
+                  <div className="pl-4 sm:pl-5 border-l border-slate-200">
                     <span className="text-[10px] font-mono-tabular uppercase tracking-wider text-slate-400 block font-semibold">
                       {t.fastestFlight}
                     </span>
-                    <span className="text-lg font-mono-tabular font-bold text-slate-800">
+                    <span className="text-base font-mono-tabular font-bold text-slate-800">
                       {data.summary.fastestDurationMinutes} {t.minsSuffix}
                     </span>
                   </div>

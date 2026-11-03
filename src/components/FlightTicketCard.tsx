@@ -178,10 +178,10 @@ export function FlightTicketCard({
 
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="font-bold text-slate-900 text-base">
+              <h3 className="font-bold text-slate-900 text-sm">
                 {flight.airline}
               </h3>
-              <span className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 font-mono-tabular text-xs font-bold text-slate-800">
+              <span className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200 font-mono-tabular text-[11px] font-bold text-slate-800">
                 {flight.flightNumber}
               </span>
             </div>
@@ -222,7 +222,7 @@ export function FlightTicketCard({
         <div className="lg:col-span-4 flex items-center justify-between gap-3 px-2">
           {/* Departure Airport */}
           <div className="text-left min-w-[75px]">
-            <div className="font-mono-tabular text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+            <div className="font-mono-tabular text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
               {formatTimeHHMM(flight.departureTime)}
             </div>
             <div className="mt-0.5">
@@ -255,7 +255,7 @@ export function FlightTicketCard({
 
           {/* Arrival Airport */}
           <div className="text-right min-w-[75px] flex flex-col items-end">
-            <div className="font-mono-tabular text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+            <div className="font-mono-tabular text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
               {formatTimeHHMM(flight.arrivalTime)}
             </div>
             <div className="mt-0.5">
@@ -274,7 +274,7 @@ export function FlightTicketCard({
               {flight.fareBrand || t.headlineMatrix}
             </div>
 
-            <div className="font-mono-tabular text-2xl sm:text-3xl font-bold text-[#19398a] tracking-tight">
+            <div className="font-mono-tabular text-xl sm:text-2xl font-bold text-[#19398a] tracking-tight">
               {formatMoneyDisplay(unitAmountInDisplay, displayCurrency)}
             </div>
 
