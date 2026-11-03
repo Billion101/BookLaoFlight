@@ -365,7 +365,7 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
                   route.origin === origin && route.destination === destination;
                 return (
                   <button
-                    key={route.label}
+                    key={`${route.origin}-${route.destination}`}
                     type="button"
                     onClick={() =>
                       handleRouteSelect(route.origin, route.destination)
