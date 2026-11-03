@@ -294,7 +294,7 @@ export function BookingTransferModal({
           <button
             type="button"
             onClick={handleManualOpen}
-            className="px-5 py-2.5 rounded-xl bg-sky-700 hover:bg-sky-800 text-white text-xs font-bold flex items-center gap-2 shadow-sm transition cursor-pointer"
+            className="px-5 py-2.5 rounded-xl bg-[#5cb85c] hover:bg-[#4cae4c] text-white text-xs font-bold flex items-center gap-2 shadow-sm transition cursor-pointer"
           >
             <span>ไปยังหน้าเว็บ {flight.airline} ทันที</span>
             <ExternalLink className="w-4 h-4" />

@@ -42,21 +42,21 @@ const AIRLINE_THEME: Record<
     accentBorder: "border-l-[#19398a]",
     badgeBg: "bg-[#19398a]/10 border-[#19398a]/20",
     badgeText: "text-[#19398a]",
-    buttonBg: "bg-[#5cb85c] hover:bg-[#4cae4c]", // Authentic Lao Airlines green CTA
+    buttonBg: "bg-[#5cb85c] hover:bg-[#4cae4c]",
     code: "QV"
   },
   "Lao Skyway": {
     accentBorder: "border-l-rose-600",
     badgeBg: "bg-rose-50 border-rose-200",
     badgeText: "text-rose-800",
-    buttonBg: "bg-[#19398a] hover:bg-[#0f245c]",
+    buttonBg: "bg-[#5cb85c] hover:bg-[#4cae4c]",
     code: "LK"
   },
   "Lanexang Airways": {
     accentBorder: "border-l-emerald-600",
     badgeBg: "bg-emerald-50 border-emerald-200",
     badgeText: "text-emerald-800",
-    buttonBg: "bg-[#19398a] hover:bg-[#0f245c]",
+    buttonBg: "bg-[#5cb85c] hover:bg-[#4cae4c]",
     code: "5A"
   }
 };
