@@ -85,7 +85,11 @@ export const TRANSLATIONS = {
     paxUnit: "Pax",
     officialBooking: "Official Airline Booking",
     filterButton: "Filter",
-    applyFilters: "Apply"
+    applyFilters: "Apply",
+    viewMoreFlights: "View more flights from",
+    showLess: "Show less",
+    additionalFlightsFrom: "Additional flight options from",
+    fromPrice: "from"
   },
   lo: {
     appName: "SABAIDEE SKY",
@@ -171,7 +175,11 @@ export const TRANSLATIONS = {
     paxUnit: "ຄົນ",
     officialBooking: "ລະບົບຈອງປີ້ທາງການຂອງສາຍການບິນ",
     filterButton: "ກັ່ນຕອງ",
-    applyFilters: "ຕົກລົງ"
+    applyFilters: "ຕົກລົງ",
+    viewMoreFlights: "ເບິ່ງອີກ",
+    showLess: "ສະແດງໜ້ອຍລົງ",
+    additionalFlightsFrom: "ທາງເລືອກຖ້ຽວບິນເພີ່ມເຕີມຈາກ",
+    fromPrice: "ເລີ່ມຕົ້ນ"
   }
 } as const;
 

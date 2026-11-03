@@ -4,6 +4,8 @@ import React, { useCallback, useMemo, useState } from "react";
 import {
   ArrowLeftRight,
   Calendar,
+  ChevronDown,
+  ChevronUp,
   Globe,
   PlaneTakeoff,
   Search,
@@ -20,11 +22,17 @@ import {
 } from "@/data/laos-airports";
 import { getTranslation, Language } from "@/data/translations";
 import {
+  AirlineName,
   CurrencyCode,
   FlightResult,
   MetasearchResponse
 } from "@/types/flight";
-import { FlightTicketCard, formatMoneyDisplay } from "./FlightTicketCard";
+import {
+  FlightTicketCard,
+  formatMoneyDisplay,
+  formatTimeHHMM
+} from "./FlightTicketCard";
+import { AirlineLogo } from "./AirlineLogo";
 import { LaosAirspaceMap } from "./LaosAirspaceMap";
 
 interface MetasearchPortalProps {
@@ -201,6 +209,38 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
       }
     }
     return fastest.id;
+  }, [filteredAndSortedFlights]);
+
+  const [expandedAirlines, setExpandedAirlines] = useState<Record<string, boolean>>({});
+
+  const toggleAirlineExpand = (airline: string) => {
+    setExpandedAirlines((prev) => ({
+      ...prev,
+      [airline]: !prev[airline]
+    }));
+  };
+
+  const airlineFlightGroups = useMemo(() => {
+    const groupsMap = new Map<AirlineName, FlightResult[]>();
+
+    for (const flight of filteredAndSortedFlights) {
+      const existing = groupsMap.get(flight.airline) ?? [];
+      existing.push(flight);
+      groupsMap.set(flight.airline, existing);
+    }
+
+    return Array.from(groupsMap.entries()).map(([airline, flights]) => {
+      // In price sort: first flight is cheapest.
+      // In departure sort: first flight is earliest.
+      // In duration sort: first flight is fastest.
+      const primaryFlight = flights[0];
+      const additionalFlights = flights.slice(1);
+      return {
+        airline,
+        primaryFlight,
+        additionalFlights
+      };
+    });
   }, [filteredAndSortedFlights]);
 
   const originInfo = AIRPORT_BY_CODE[origin];
@@ -593,19 +633,91 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
             </div>
 
             {/* Flight Cards List */}
-            <div className="space-y-3.5">
-              {filteredAndSortedFlights.length > 0 ? (
-                filteredAndSortedFlights.map((flight) => (
-                  <FlightTicketCard
-                    key={flight.id}
-                    flight={flight}
-                    displayCurrency={displayCurrency}
-                    adults={adults}
-                    isCheapest={flight.id === cheapestFlightId}
-                    isFastest={flight.id === fastestFlightId}
-                    lang={language}
-                  />
-                ))
+            <div className="space-y-4">
+              {airlineFlightGroups.length > 0 ? (
+                airlineFlightGroups.map((group) => {
+                  const isExpanded = expandedAirlines[group.airline] === true;
+                  const firstAddPrice = group.additionalFlights[0]
+                    ? displayCurrency === "USD"
+                      ? group.additionalFlights[0].priceUsd?.amount ?? group.additionalFlights[0].price.amount
+                      : group.additionalFlights[0].priceLak?.amount ?? group.additionalFlights[0].price.amount
+                    : 0;
+
+                  return (
+                    <div key={group.airline} className="space-y-3">
+                      {/* Primary (Cheapest/Selected) Flight Card for this Airline */}
+                      <FlightTicketCard
+                        flight={group.primaryFlight}
+                        displayCurrency={displayCurrency}
+                        adults={adults}
+                        isCheapest={group.primaryFlight.id === cheapestFlightId}
+                        isFastest={group.primaryFlight.id === fastestFlightId}
+                        lang={language}
+                      />
+
+                      {/* Expandable Additional Choices for this Airline */}
+                      {group.additionalFlights.length > 0 && (
+                        <div className="pt-0.5">
+                          {!isExpanded ? (
+                            <button
+                              type="button"
+                              onClick={() => toggleAirlineExpand(group.airline)}
+                              className="w-full py-2.5 px-4 bg-white hover:bg-blue-50/50 border border-dashed border-slate-300 hover:border-[#19398a]/50 rounded-xl flex items-center justify-between text-xs font-semibold text-slate-700 shadow-2xs transition-all cursor-pointer group"
+                            >
+                              <div className="flex items-center gap-2.5">
+                                <AirlineLogo airline={group.airline} size="sm" />
+                                <span className="text-slate-800 font-bold group-hover:text-[#19398a]">
+                                  {language === "lo"
+                                    ? `+ ${t.viewMoreFlights} ${group.additionalFlights.length} ຖ້ຽວບິນຈາກ ${group.airline}`
+                                    : `+ ${t.viewMoreFlights} ${group.airline} (${group.additionalFlights.length} more)`}
+                                </span>
+                                <span className="hidden sm:inline text-[11px] font-mono-tabular text-slate-500">
+                                  ({group.additionalFlights.map((f) => `${f.flightNumber} · ${formatTimeHHMM(f.departureTime)}`).join(", ")})
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2 text-[#19398a] font-bold font-mono-tabular">
+                                <span className="text-[11px] text-slate-500 font-normal">
+                                  {t.fromPrice}{" "}
+                                  <strong className="text-[#19398a] font-bold">
+                                    {formatMoneyDisplay(firstAddPrice, displayCurrency)}
+                                  </strong>
+                                </span>
+                                <ChevronDown className="w-4 h-4 text-[#19398a] transition-transform group-hover:translate-y-0.5" />
+                              </div>
+                            </button>
+                          ) : (
+                            <div className="space-y-3 pt-1 sm:pl-3 border-l-2 border-[#19398a]/20">
+                              <div className="flex items-center justify-between px-1 text-xs text-slate-500 font-medium">
+                                <span className="font-semibold text-slate-700">
+                                  {t.additionalFlightsFrom} {group.airline} ({group.additionalFlights.length})
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => toggleAirlineExpand(group.airline)}
+                                  className="text-[#19398a] hover:text-[#0f245c] hover:underline font-bold flex items-center gap-1 cursor-pointer py-1 px-2.5 rounded-lg bg-blue-50 border border-blue-200/60"
+                                >
+                                  <span>{t.showLess}</span>
+                                  <ChevronUp className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                              {group.additionalFlights.map((flight) => (
+                                <FlightTicketCard
+                                  key={flight.id}
+                                  flight={flight}
+                                  displayCurrency={displayCurrency}
+                                  adults={adults}
+                                  isCheapest={flight.id === cheapestFlightId}
+                                  isFastest={flight.id === fastestFlightId}
+                                  lang={language}
+                                />
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })
               ) : (
                 <div className="bg-white rounded-2xl border border-slate-200 p-8 sm:p-10 text-center space-y-4">
                   <div className="w-12 h-12 mx-auto rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600">

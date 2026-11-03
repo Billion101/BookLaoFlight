@@ -61,7 +61,7 @@ const AIRLINE_THEME: Record<
   }
 };
 
-function formatTimeHHMM(isoString: string): string {
+export function formatTimeHHMM(isoString: string): string {
   const match = isoString.match(/T(\d{2}:\d{2})/);
   if (match?.[1]) return match[1];
   const d = new Date(isoString);

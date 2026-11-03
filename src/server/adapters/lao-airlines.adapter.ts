@@ -866,6 +866,25 @@ export class LaoAirlinesAdapter implements AirlineScraper {
 
       if (!Array.isArray(offers) || !Array.isArray(offers[0])) continue;
 
+      // Group Sabre offers by physical flight (flightNumber + departureTime)
+      // so each scheduled flight only produces 1 card at the lowest fare,
+      // with all other fare families consolidated into its fareTiers.
+      const flightMap = new Map<
+        string,
+        {
+          flightNumber: string;
+          origin: string;
+          dest: string;
+          departureTime: string;
+          arrivalTime: string;
+          durationMinutes: number;
+          aircraft: string;
+          seatAvailable: number;
+          bookingUrl: string;
+          allTiers: FareTierOption[];
+        }
+      >();
+
       for (let idx = 0; idx < offers[0].length; idx++) {
         const offer = offers[0][idx];
         if (!offer || typeof offer !== "object") continue;
@@ -940,7 +959,7 @@ export class LaoAirlinesAdapter implements AirlineScraper {
           typeof seg?.bookingClass === "string" ? seg.bookingClass : "Y";
 
         // Extract all brand offers for this itinerary leg if available
-        const fareTiers: FareTierOption[] = [];
+        const currentFareTiers: FareTierOption[] = [];
         const brandGroup = brandGroups[idx] as
           | { brandOffers?: Array<Record<string, unknown>> }
           | undefined;
@@ -967,7 +986,7 @@ export class LaoAirlinesAdapter implements AirlineScraper {
           const fAmt = bFareAmt ?? rawAmt * 0.75;
           const tAmt = bTaxAmt ?? rawAmt * 0.25;
 
-          fareTiers.push({
+          currentFareTiers.push({
             brandName: brandLabels[bId] || `Sabre Brand (${bId})`,
             cabinClass: bo.cabinClass === "Business" ? "Business" : "Economy",
             bookingClass,
@@ -990,7 +1009,7 @@ export class LaoAirlinesAdapter implements AirlineScraper {
           });
         }
 
-        if (fareTiers.length === 0) {
+        if (currentFareTiers.length === 0) {
           const fareAmt = (orig?.fare as Record<string, unknown> | undefined)?.alternatives as unknown[][] | undefined;
           const baseFareNum = (fareAmt?.[0]?.[0] as { amount?: number } | undefined)?.amount;
           const taxesAmt = (orig?.taxes as Record<string, unknown> | undefined)?.alternatives as unknown[][] | undefined;
@@ -1004,7 +1023,7 @@ export class LaoAirlinesAdapter implements AirlineScraper {
           const fAmt = baseFareNum ?? rawAmt * 0.75;
           const tAmt = taxNum ?? rawAmt * 0.25;
 
-          fareTiers.push({
+          currentFareTiers.push({
             brandName: brandLabels[brandId] || `Sabre Brand (${brandId})`,
             cabinClass: "Economy",
             bookingClass,
@@ -1027,8 +1046,35 @@ export class LaoAirlinesAdapter implements AirlineScraper {
           });
         }
 
-        fareTiers.sort((a, b) => a.amount - b.amount);
-        const cheapestTier = fareTiers[0];
+        const flightKey = `${flightNumber}_${departureTime}`;
+        if (flightMap.has(flightKey)) {
+          const existing = flightMap.get(flightKey)!;
+          existing.seatAvailable = Math.max(existing.seatAvailable, seatAvailable);
+          for (const tier of currentFareTiers) {
+            if (!existing.allTiers.some((t) => t.brandName === tier.brandName && t.amount === tier.amount)) {
+              existing.allTiers.push(tier);
+            }
+          }
+        } else {
+          flightMap.set(flightKey, {
+            flightNumber,
+            origin,
+            dest,
+            departureTime,
+            arrivalTime,
+            durationMinutes,
+            aircraft,
+            seatAvailable,
+            bookingUrl,
+            allTiers: currentFareTiers
+          });
+        }
+      }
+
+      // Convert consolidated flightMap into distinct normalized flight results
+      for (const flight of flightMap.values()) {
+        flight.allTiers.sort((a, b) => a.amount - b.amount);
+        const cheapestTier = flight.allTiers[0];
 
         const priceLak: PriceBreakdown = {
           amount: cheapestTier.amountLak ?? Math.round(cheapestTier.amount * USD_TO_LAK_RATE),
@@ -1050,27 +1096,27 @@ export class LaoAirlinesAdapter implements AirlineScraper {
 
         results.push(
           normalizeFlightResult({
-            id: `QV-LIVE-${flightNumber}-${date}`,
+            id: `QV-LIVE-${flight.flightNumber}-${date}`,
             airline: "Lao Airlines",
             airlineLogoUrl: this.logoUrl,
-            flightNumber,
-            originCode: origin,
-            destCode: dest,
-            departureTime,
-            arrivalTime,
-            durationMinutes,
+            flightNumber: flight.flightNumber,
+            originCode: flight.origin,
+            destCode: flight.dest,
+            departureTime: flight.departureTime,
+            arrivalTime: flight.arrivalTime,
+            durationMinutes: flight.durationMinutes,
             price,
             priceLak,
             priceUsd,
-            seatAvailable,
-            bookingUrl,
+            seatAvailable: flight.seatAvailable,
+            bookingUrl: flight.bookingUrl,
             isAvailable: true,
             soldOut: false,
             cabinClass: cheapestTier.cabinClass,
-            aircraft,
-            fareBrand: `${cheapestTier.brandName} (${bookingClass})`,
+            aircraft: flight.aircraft,
+            fareBrand: `${cheapestTier.brandName} (${cheapestTier.bookingClass || "Y"})`,
             baggageKg: cheapestTier.baggageKg,
-            fareTiers,
+            fareTiers: flight.allTiers,
             dataSource: "live-api",
             engineName: this.engineName
           })
