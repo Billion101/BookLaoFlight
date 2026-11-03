@@ -116,7 +116,7 @@ export function AirportSelect({
   const isOrigin = type === "origin";
 
   return (
-    <div ref={dropdownRef} className="relative w-full">
+    <div ref={dropdownRef} className={`relative w-full ${isOpen ? "z-50" : "z-10"}`}>
       {/* Trigger Button */}
       <button
         type="button"
@@ -410,7 +410,7 @@ export function DatePickerSelect({
   }, [selectedDate, t]);
 
   return (
-    <div ref={dropdownRef} className="relative w-full">
+    <div ref={dropdownRef} className={`relative w-full ${isOpen ? "z-50" : "z-10"}`}>
       {/* Trigger Button */}
       <button
         type="button"
@@ -439,7 +439,7 @@ export function DatePickerSelect({
 
       {/* Custom Popover Calendar Dialog */}
       {isOpen && (
-        <div className="absolute top-full left-0 sm:left-auto sm:right-0 mt-1.5 w-[310px] sm:w-[325px] bg-white rounded-2xl shadow-2xl border border-slate-200/90 z-50 p-3.5 animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute top-full left-0 sm:left-auto sm:right-0 mt-1.5 w-[310px] sm:w-[325px] max-w-[calc(100vw-32px)] bg-white rounded-2xl shadow-2xl border border-slate-200/90 z-50 p-3.5 animate-in fade-in zoom-in-95 duration-150">
           {/* Month Header Navigation */}
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <button
@@ -601,7 +601,7 @@ export function PassengerSelect({
   };
 
   return (
-    <div ref={dropdownRef} className="relative w-full">
+    <div ref={dropdownRef} className={`relative w-full ${isOpen ? "z-50" : "z-10"}`}>
       {/* Trigger Button */}
       <button
         type="button"
@@ -634,7 +634,7 @@ export function PassengerSelect({
 
       {/* Custom Popover Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 sm:left-auto sm:right-0 mt-1.5 w-[260px] sm:w-[280px] bg-white rounded-2xl shadow-2xl border border-slate-200/90 z-50 p-4 animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute top-full left-0 sm:left-auto sm:right-0 mt-1.5 w-[260px] sm:w-[280px] max-w-[calc(100vw-32px)] bg-white rounded-2xl shadow-2xl border border-slate-200/90 z-50 p-4 animate-in fade-in zoom-in-95 duration-150">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <div>
               <div className="text-xs font-bold text-slate-900">

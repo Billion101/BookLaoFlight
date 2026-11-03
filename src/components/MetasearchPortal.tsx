@@ -261,10 +261,12 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Top Aviation Dispatch Hero Console - Lao Airlines Royal Navy & Dok Champa Gold */}
-      <header className="bg-gradient-to-r from-[#19398a] via-[#152e72] to-[#0f245c] text-white border-b-4 border-[#eab308] relative overflow-hidden shadow-lg">
-        {/* Subtle Dok Champa ambient light */}
-        <div className="absolute -top-32 left-1/4 w-96 h-96 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-32 right-1/4 w-96 h-96 bg-blue-300/10 rounded-full blur-3xl pointer-events-none" />
+      <header className="bg-gradient-to-r from-[#19398a] via-[#152e72] to-[#0f245c] text-white border-b-4 border-[#eab308] relative shadow-lg z-30">
+        {/* Subtle Dok Champa ambient light - isolated inside an overflow-hidden layer so header itself never clips popovers */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-32 left-1/4 w-96 h-96 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-32 right-1/4 w-96 h-96 bg-blue-300/10 rounded-full blur-3xl pointer-events-none" />
+        </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-7 relative z-10">
           {/* Top Navigation Bar */}
@@ -401,7 +403,7 @@ export function MetasearchPortal({ initialData }: MetasearchPortalProps) {
               e.preventDefault();
               executeSearch(origin, destination, date, adults, false);
             }}
-            className="bg-white text-slate-900 border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 shadow-2xl grid grid-cols-1 md:grid-cols-12 gap-3 items-center"
+            className="bg-white text-slate-900 border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 shadow-2xl grid grid-cols-1 md:grid-cols-12 gap-3 items-center relative z-20"
           >
             {/* Origin Airport Custom Dropdown (3 cols) */}
             <div className="md:col-span-3">
