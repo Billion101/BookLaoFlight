@@ -151,6 +151,12 @@ export const POPULAR_LAOS_ROUTES: Array<{
 }> = [
   {
     origin: "VTE",
+    destination: "XKH",
+    label: "VTE → XKH",
+    tagline: "Plain of Jars Highland Hop"
+  },
+  {
+    origin: "VTE",
     destination: "LPQ",
     label: "VTE → LPQ",
     tagline: "Capital to UNESCO Heritage"

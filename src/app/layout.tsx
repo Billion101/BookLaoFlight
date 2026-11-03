@@ -2,9 +2,16 @@ import type { Metadata } from "next";
 import {
   Space_Grotesk,
   Plus_Jakarta_Sans,
-  JetBrains_Mono
+  JetBrains_Mono,
+  Noto_Sans_Lao
 } from "next/font/google";
 import "./globals.css";
+
+const notoSansLao = Noto_Sans_Lao({
+  subsets: ["lao"],
+  variable: "--font-lao",
+  weight: ["400", "500", "600", "700"]
+});
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -38,9 +45,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
+      className={`${notoSansLao.variable} ${spaceGrotesk.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="min-h-screen antialiased text-sm leading-normal selection:bg-amber-500 selection:text-slate-950">
+      <body className="min-h-screen antialiased text-sm leading-normal selection:bg-amber-500 selection:text-slate-950 font-sans">
         {children}
       </body>
     </html>
