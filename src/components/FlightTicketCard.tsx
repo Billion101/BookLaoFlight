@@ -145,7 +145,7 @@ export function FlightTicketCard({
             <AirlineLogo
               airline={flight.airline}
               size="sm"
-              className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg p-0.5 shrink-0"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg p-1 shrink-0"
             />
             <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
               <span className="font-bold text-slate-800 text-xs sm:text-sm truncate">

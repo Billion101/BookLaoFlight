@@ -29,6 +29,7 @@ const AIRLINE_OFFICIAL_ASSETS: Record<
     alt: string;
     code: string;
     border: string;
+    bg: string;
   }
 > = {
   "Lao Airlines": {
@@ -36,21 +37,24 @@ const AIRLINE_OFFICIAL_ASSETS: Record<
     fallbackIcon: "/airlines/laoairlines_square.png",
     alt: "Lao Airlines",
     code: "QV",
-    border: "border-blue-200"
+    border: "border-blue-200/80",
+    bg: "bg-blue-50/70"
   },
   "Lao Skyway": {
     primary: "/airlines/laoskyway.png",
     fallbackIcon: "/airlines/laoskyway_square.png",
     alt: "Lao Skyway",
     code: "LK",
-    border: "border-rose-200"
+    border: "border-rose-200/80",
+    bg: "bg-rose-50/70"
   },
   "Lanexang Airways": {
     primary: "/airlines/lxairways.png",
     fallbackIcon: "/airlines/lxairways_icon.png",
     alt: "Lanexang Airways",
     code: "5A",
-    border: "border-emerald-200"
+    border: "border-emerald-200/80",
+    bg: "bg-emerald-50/70"
   }
 };
 
@@ -65,7 +69,7 @@ export function AirlineLogo({
 
   return (
     <div
-      className={`${sizeClass} rounded-xl bg-white border ${asset.border} shadow-xs flex items-center justify-center p-1.5 shrink-0 overflow-hidden ${className}`}
+      className={`${sizeClass} rounded-xl ${asset.bg} border ${asset.border} shadow-2xs flex items-center justify-center p-1.5 shrink-0 overflow-hidden ${className}`}
       title={`${asset.alt} (${asset.code})`}
     >
       <img
