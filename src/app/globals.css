@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+:root {
+  --bg-canvas: #f4f7fb;
+  --lao-navy: #19398a;
+  --lao-navy-dark: #0f245c;
+  --lao-navy-deep: #0a183d;
+  --lao-gold: #f59e0b;
+  --lao-champa: #fbbf24;
+  --lao-cyan: #00aeef;
+  --lao-green: #5cb85c;
+  --ink-cockpit: #0f172a;
+  --border-instrument: #cbd5e1;
+}
+
+body {
+  background-color: var(--bg-canvas);
+  color: var(--ink-cockpit);
+  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(25, 57, 138, 0.05) 1px,
+      transparent 0
+    );
+  background-size: 24px 24px;
+}
+
+.font-display {
+  font-family: var(--font-display), sans-serif;
+}
+
+.font-mono-tabular {
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes dashFlow {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+.animate-flight-arc {
+  stroke-dasharray: 7 7;
+  animation: dashFlow 1.2s linear infinite;
+}
+
+/* Perforated boarding pass notch */
+.ticket-notch-left,
+.ticket-notch-right {
+  position: relative;
+}
+
