@@ -135,11 +135,12 @@ function resolveOfficialUsdPrice(
 ): number {
   const routeKey = `${origin.toUpperCase()}-${dest.toUpperCase()}`;
   const tariffs = QV_OFFICIAL_USD_TARIFFS[routeKey];
-  if (tariffs) {
-    if (tariffs[brandId]) return tariffs[brandId];
+  // Standard promo/economy tariffs apply when LAK price is in baseline range (< 2,500,000 LAK)
+  if (tariffs && lakAmount < 2500000) {
     if (tariffs[bookingClass]) return tariffs[bookingClass];
+    if (tariffs[brandId]) return tariffs[brandId];
   }
-  // If specific tariff not matched, use official Sabre IATA BSR rate
+  // For high-yield, flexible, or last-seat booking classes, use official Sabre IATA BSR rate
   return Math.round((lakAmount / USD_TO_LAK_RATE) * 100) / 100;
 }
 

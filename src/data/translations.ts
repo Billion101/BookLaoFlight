@@ -89,7 +89,10 @@ export const TRANSLATIONS = {
     viewMoreFlights: "View more flights from",
     showLess: "Show less",
     additionalFlightsFrom: "Additional flight options from",
-    fromPrice: "from"
+    fromPrice: "from",
+    taxesIncluded: "Taxes & fees included",
+    details: "Details",
+    allIn: "All-in"
   },
   lo: {
     appName: "SABAIDEE SKY",
@@ -179,7 +182,10 @@ export const TRANSLATIONS = {
     viewMoreFlights: "ເບິ່ງອີກ",
     showLess: "ສະແດງໜ້ອຍລົງ",
     additionalFlightsFrom: "ທາງເລືອກຖ້ຽວບິນເພີ່ມເຕີມຈາກ",
-    fromPrice: "ເລີ່ມຕົ້ນ"
+    fromPrice: "ເລີ່ມຕົ້ນ",
+    taxesIncluded: "ລວມພາສີ & ຄ່າທຳນຽມແລ້ວ",
+    details: "ລາຍລະອຽດ",
+    allIn: "ລວມທັງໝົດ"
   }
 } as const;
 
