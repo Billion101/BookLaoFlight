@@ -51,3 +51,15 @@ body {
   position: relative;
 }
 
+/* Hide Next.js development toast & dev overlay indicator */
+nextjs-portal,
+[data-nextjs-dialog-overlay],
+[data-nextjs-toast-wrapper],
+[data-nextjs-dev-tools-indicator] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+
