@@ -98,19 +98,13 @@ export function AirportBadge({
   type?: "origin" | "dest";
   className?: string;
 }) {
-  const isOrigin = type === "origin";
   return (
-    <div
-      className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md font-mono-tabular font-bold text-xs ${
-        isOrigin
-          ? "bg-amber-500/10 text-amber-800 border border-amber-500/20"
-          : "bg-blue-500/10 text-[#19398a] border border-blue-500/20"
-      } ${className}`}
+    <span
+      className={`font-mono-tabular font-bold text-xs text-slate-800 ${className}`}
       title={`${code} Airport (${city || ""})`}
     >
-      <span className="text-[10px]">{isOrigin ? "🛫" : "🛬"}</span>
       <span>{code}</span>
-    </div>
+    </span>
   );
 }
 

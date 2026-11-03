@@ -140,13 +140,14 @@ export function AirportSelect({
         </span>
 
         <div className="mt-1 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="font-mono-tabular font-bold text-sm text-[#19398a] bg-[#19398a]/10 px-1.5 py-0.5 rounded border border-[#19398a]/20 shrink-0">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <span className="font-mono-tabular font-bold text-sm text-slate-900 shrink-0">
               {selectedAirport.code}
             </span>
-            <span className="font-display font-bold text-sm text-slate-900 truncate">
+            <span className="text-slate-300 font-normal">·</span>
+            <span className="font-display font-bold text-sm text-slate-800 truncate">
               {lang === "lo" ? selectedAirport.nameLao : selectedAirport.city}{" "}
-              <span className="text-xs font-normal text-slate-500 font-sans">
+              <span className="text-xs font-normal text-slate-400 font-sans">
                 ({lang === "lo" ? selectedAirport.city : selectedAirport.nameLao})
               </span>
             </span>
@@ -235,7 +236,7 @@ export function AirportSelect({
 
                     <div className="shrink-0 flex items-center gap-1.5">
                       {airport.highlightTag && (
-                        <span className="hidden sm:inline-block text-[9.5px] font-mono-tabular px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-800 border border-amber-500/20 font-semibold">
+                        <span className="hidden sm:inline-block text-[10px] font-mono-tabular text-slate-400 font-medium">
                           {airport.highlightTag}
                         </span>
                       )}

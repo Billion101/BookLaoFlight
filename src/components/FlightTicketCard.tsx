@@ -151,7 +151,8 @@ export function FlightTicketCard({
               <span className="font-bold text-slate-800 text-xs sm:text-sm truncate">
                 {flight.airline}
               </span>
-              <span className="px-1.5 py-0.5 rounded bg-slate-100 border border-slate-200/80 font-mono-tabular text-[10px] sm:text-[11px] font-bold text-slate-700">
+              <span className="text-slate-400 font-mono-tabular text-xs">·</span>
+              <span className="font-mono-tabular text-xs font-semibold text-slate-600">
                 {flight.flightNumber}
               </span>
             </div>
@@ -159,21 +160,21 @@ export function FlightTicketCard({
 
           <div className="flex items-center gap-1.5 shrink-0">
             {isSoldOut ? (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-50 text-red-700 border border-red-200 text-[10px] font-bold font-mono-tabular">
-                <XCircle className="w-3 h-3" />
+              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-600 font-mono-tabular">
+                <XCircle className="w-3.5 h-3.5" />
                 <span>{t.soldOutBadge}</span>
               </span>
             ) : (
               <>
                 {isCheapest && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-300 text-[10px] font-bold font-mono-tabular">
-                    <Sparkles className="w-3 h-3 text-amber-600" />
+                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-600 font-mono-tabular">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                     <span>{t.bestFareBadge}</span>
                   </span>
                 )}
                 {isFastest && !isCheapest && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-50 text-blue-800 border border-blue-300 text-[10px] font-bold font-mono-tabular">
-                    <Clock className="w-3 h-3 text-blue-600" />
+                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-sky-600 font-mono-tabular">
+                    <Clock className="w-3.5 h-3.5 text-sky-500" />
                     <span>{t.fastestSectorBadge}</span>
                   </span>
                 )}
@@ -190,9 +191,10 @@ export function FlightTicketCard({
               {formatTimeHHMM(flight.departureTime)}
             </div>
             <div className="flex items-center gap-1 mt-1">
-              <span className="font-mono-tabular text-xs font-bold text-[#19398a] bg-blue-50/80 px-1.5 py-0.5 rounded border border-blue-200/60">
+              <span className="font-mono-tabular text-xs font-bold text-slate-800">
                 {flight.origin.code}
               </span>
+              <span className="text-slate-300 font-normal">·</span>
               <span className="text-[11px] text-slate-500 font-medium truncate max-w-[80px] sm:max-w-[120px]">
                 {originCity}
               </span>
@@ -228,7 +230,8 @@ export function FlightTicketCard({
               <span className="text-[11px] text-slate-500 font-medium truncate max-w-[80px] sm:max-w-[120px]">
                 {destCity}
               </span>
-              <span className="font-mono-tabular text-xs font-bold text-amber-900 bg-amber-500/15 px-1.5 py-0.5 rounded border border-amber-500/30">
+              <span className="text-slate-300 font-normal">·</span>
+              <span className="font-mono-tabular text-xs font-bold text-slate-800">
                 {flight.destination.code}
               </span>
             </div>
@@ -236,36 +239,42 @@ export function FlightTicketCard({
         </div>
 
         {/* Row 3: Compact Metadata Bar (Aircraft, Baggage, Seats left) */}
-        <div className="flex items-center justify-between text-[11px] font-mono-tabular text-slate-600 py-1 px-2.5 rounded-lg bg-slate-50/80 border border-slate-100 flex-wrap gap-2">
-          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+        <div className="flex items-center justify-between text-[11px] font-mono-tabular text-slate-500 py-0.5 flex-wrap gap-2">
+          <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
             {flight.aircraft && (
-              <span className="flex items-center gap-1 text-slate-700">
+              <span className="flex items-center gap-1 text-slate-600">
                 ✈ <span>{flight.aircraft}</span>
               </span>
             )}
+            {flight.aircraft && flight.baggageKg && (
+              <span className="text-slate-300">·</span>
+            )}
             {flight.baggageKg && (
-              <span className="flex items-center gap-1 text-slate-700">
+              <span className="flex items-center gap-1 text-slate-600">
                 <Briefcase className="w-3 h-3 text-slate-400" />
                 <span>{flight.baggageKg} kg</span>
               </span>
             )}
             {typeof flight.seatAvailable === "number" && (
-              <span
-                className={`flex items-center gap-1 font-semibold ${
-                  flight.seatAvailable <= 4 ? "text-rose-600 font-bold" : "text-slate-600"
-                }`}
-              >
-                <Users className="w-3 h-3" />
-                <span>
-                  {flight.seatAvailable === 0
-                    ? t.zeroSeats
-                    : `${flight.seatAvailable} ${t.seatsLeft}`}
+              <>
+                <span className="text-slate-300">·</span>
+                <span
+                  className={`flex items-center gap-1 font-semibold ${
+                    flight.seatAvailable <= 4 ? "text-rose-600 font-bold" : "text-slate-600"
+                  }`}
+                >
+                  <Users className="w-3 h-3" />
+                  <span>
+                    {flight.seatAvailable === 0
+                      ? t.zeroSeats
+                      : `${flight.seatAvailable} ${t.seatsLeft}`}
+                  </span>
                 </span>
-              </span>
+              </>
             )}
           </div>
           {flight.fareBrand && (
-            <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider truncate max-w-[110px] sm:max-w-none">
+            <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider truncate max-w-[110px] sm:max-w-none">
               {flight.fareBrand.split(" ")[0]}
             </span>
           )}
@@ -354,14 +363,14 @@ export function FlightTicketCard({
 
           {/* Itemized Fare + Tax Summary Banner */}
           {baseFareInDisplay !== null && taxAmountInDisplay !== null && (
-            <div className="flex items-center justify-between text-xs font-mono-tabular p-2.5 rounded-xl bg-blue-50/80 border border-blue-100 text-[#19398a] flex-wrap gap-2">
+            <div className="flex items-center justify-between text-xs font-mono-tabular py-2 border-b border-slate-200/80 text-slate-700 flex-wrap gap-2">
               <span className="font-medium flex items-center gap-1.5">
-                <Receipt className="w-3.5 h-3.5 text-[#19398a]" />
-                <span>{t.fare}: <strong>{formatMoneyDisplay(baseFareInDisplay, displayCurrency)}</strong></span>
+                <Receipt className="w-3.5 h-3.5 text-slate-500" />
+                <span>{t.fare}: <strong className="text-slate-900">{formatMoneyDisplay(baseFareInDisplay, displayCurrency)}</strong></span>
                 <span className="text-slate-300">•</span>
-                <span>{t.tax}: <strong>{formatMoneyDisplay(taxAmountInDisplay, displayCurrency)}</strong></span>
+                <span>{t.tax}: <strong className="text-slate-900">{formatMoneyDisplay(taxAmountInDisplay, displayCurrency)}</strong></span>
               </span>
-              <span className="font-bold">
+              <span className="font-bold text-[#19398a]">
                 {t.allIn}: {formatMoneyDisplay(unitAmountInDisplay, displayCurrency)}
               </span>
             </div>
@@ -391,7 +400,7 @@ export function FlightTicketCard({
                       <span className="text-xs font-bold text-slate-900">
                         {tier.brandName}
                       </span>
-                      <span className="text-[10px] font-mono-tabular px-1.5 py-0.5 rounded bg-[#19398a]/10 text-[#19398a] font-bold">
+                      <span className="text-[11px] font-mono-tabular text-slate-500 font-medium">
                         {t.classPrefix} {tier.bookingClass}
                       </span>
                     </div>
